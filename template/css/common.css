@@ -1,0 +1,31 @@
+html {
+    overflow-x: hidden;
+}
+
+.option_search {
+    margin: -10px 10px -10px 10px;
+}
+
+.table_content {
+    margin: -20px 0 0 0;
+}
+
+th {
+    background-color: #eee;
+}
+
+.table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    border: 1px solid #ddd;
+}
+
+.btn {
+    padding: 0px 6px;
+}
+
+.edit-btn {
+    color: #1ec3ff;
+}
+
+.del-btn {
+    color: #ff1a19;
+}
