@@ -1,4 +1,5 @@
 <?php
+
 /**
  * zadk_001模块微站定义
  *
@@ -7,23 +8,19 @@
  */
 defined('IN_IA') or exit('Access Denied');
 
-class Zadk_001ModuleSite extends WeModuleSite
-{
+class Zadk_001ModuleSite extends WeModuleSite {
 
-    public function doMobileIndex()
-    {
+    public function doMobileIndex() {
         //这个操作被定义用来呈现 功能封面
     }
 
-    public function doWebBackimg()
-    {
+    public function doWebBackimg() {
         //这个操作被定义用来呈现 管理中心导航菜单
         $page = 1111;
         include $this->template('backimg');
     }
 
-    public function doWebMoodmessage()
-    {
+    public function doWebMoodmessage() {
         global $_GPC, $_W;
 
         $pindex = max(1, intval($_GPC['page']));
@@ -38,24 +35,20 @@ class Zadk_001ModuleSite extends WeModuleSite
         }
 
         $pager = pagination($total, $pindex, $psize);
-        $addRul=$this->createWebUrl('addmoodmessage');
+        $addRul = $this->createWebUrl('addmoodmessage');
         include $this->template('moodmessage');
     }
 
-    public function doWebAddmoodmessage()
-    {
+    public function doWebAddmoodmessage() {
         echo json_encode($_GPC);
     }
 
-    public function doWebUser()
-    {
+    public function doWebUser() {
         //这个操作被定义用来呈现 管理中心导航菜单
     }
 
-    public function doWebSignrecord()
-    {
+    public function doWebSignrecord() {
         //这个操作被定义用来呈现 管理中心导航菜单
     }
-
 
 }
