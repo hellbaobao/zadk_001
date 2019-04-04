@@ -1,0 +1,34 @@
+{template 'common/header'}
+<link type="text/css" rel="stylesheet" href="{$_W['siteroot']}addons/{$_GPC['m']}/template/css/common.css"/>
+<div class="panel panel-default">
+    <div class="table_content">
+        <form method="post" action=""  class="form-horizontal" style="margin-top: 20px;">
+            <input type="hidden" name="id" value="111"/>
+            <div class="form-group">
+                <label for="category_name" class="col-sm-2 control-label">类&#12288;&#12288;别</label>
+                <div class="col-sm-8">
+                    <select class="form-control" name="type">
+                        <option value="事业">事业</option>
+                        <option value="爱情">爱情</option>
+                        <option value="励志">励志</option>
+                        <option value="生活">生活</option>
+                    </select>
+                </div>
+                <label class="col-sm-2"><span class="tipMsg">*必选</span></label>
+            </div>
+            <div class="form-group">
+                <label for="editor" class="col-sm-2 control-label">海报背景</label>
+                <div class="col-sm-8">
+                    {php echo tpl_form_field_image('single-image');}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12" style="text-align: center;">
+                    <button type="button" class="btn btn-primary" id="saveInfo-btn">提&#12288;&#12288;交</button>
+                    <button type="button" class="btn btn-warning" onclick="">取&#12288;&#12288;消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{template 'common/footer'}

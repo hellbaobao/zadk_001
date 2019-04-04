@@ -1,12 +1,6 @@
 {template 'common/header'}
-<link type="text/css" rel="stylesheet" href="{$_W['siteroot']}addons/zadk_001/template/css/common.css"/>
-<script type="text/javascript">
-    function addMoodMessage() {
-        $.post({$addRul}, {'data': $('#form_data').serialize()}, function (result) {
-
-        }, 'json');
-    }
-</script>
+<link type="text/css" rel="stylesheet" href="{$_W['siteroot']}addons/{$_GPC['m']}/template/css/common.css"/>
+<script type="text/javascript"  src="{$_W['siteroot']}addons/{$_GPC['m']}/template/js/common.js"/></script>
 <div class="panel panel-default">
     <div class="panel-body b-main-title">
         djklfajlkdjkfl
@@ -18,12 +12,12 @@
               style="margin-top: 20px;">
             <div class="form-group">
                 <div class="col-sm-3" style="min-width: 200px;">
-                    <button type="button" class="btn btn-success addNoticeInfo" data-toggle="modal"
+                    <button type="button" class="btn btn-success addmoodmessage" data-toggle="modal"
                             data-target="#myModal"
                             style="height: 34px;">
                         新增
                     </button>
-                    <button type="button" class="btn btn-danger delNoticeInfo" id="delArrayInfo-btn"
+                    <button type="button" class="btn btn-danger delmoodmessage" id="delArrayInfo-btn"
                             style="height: 34px;">
                         批量删除
                     </button>
@@ -32,12 +26,12 @@
                 </div>
                 <div class="col-sm-3" style="text-align: right;">
                     <div class='input-group'>
-                        <input type="text" class="form-control" id="title" name="title" value="{$searchInfo.title}"
+                        <input type="text" class="form-control" id="title" name="title" value=""
                                placeholder="请输入标题">
                         <span class='input-group-btn'>
-                                <button type="submit" class="btn btn-success" id="searchInfo-btn" style="height: 34px;">
-                                     搜索
-                                </button>
+                            <button type="submit" class="btn btn-success" id="searchInfo-btn" style="height: 34px;">
+                                搜索
+                            </button>
                         </span>
                     </div>
                 </div>
@@ -47,18 +41,20 @@
     <div class="table_content">
         <table class="table table-hover">
             <tr>
-                <th>全选</th>
                 <th><input type="checkbox" name="allChecked" onclick="setAllChecked(this);"/></th>
+                <th>序号</th>
                 <th>类别</th>
-                <th>标题</th>
+                <th>内容</th>
                 <th>发布时间</th>
                 <th>操作</th>
             </tr>
             {loop $moodList $k $v}
             <tr>
-                <td>{php echo ($_GPC['page'])?(($_GPC['page']-1)*10+$k+1):($k+1)}</td>
                 <td>
                     <input type="checkbox" name="rowChecked" value="{$v['id']}"/>
+                </td>
+                <td>
+                    {php echo ($_GPC['page'])?(($_GPC['page']-1)*10+$k+1):($k+1)}
                 </td>
                 <td>{$v['type']}</td>
                 <td>{$v['content']}</td>
@@ -66,11 +62,11 @@
                 <td>
                     <div>
                         <button class="btn btn-default edit-btn editNoticeInfo"
-                                onclick="javascript:void(window.location.href = '__CONTROLLER__/edit/id/{$v.id}')">
+                                onclick="editMoodmessage({$v['id']})">
                             编辑
                         </button>
 
-                        <button class="btn btn-default del-btn" onclick="delInfoLayer({$v.id})">
+                        <button class="btn btn-default del-btn" onclick="delMoodmessage({$v['id']})">
                             删除
                         </button>
 
@@ -78,15 +74,10 @@
                 </td>
             </tr>
             {/loop}
-            <!--<empty name="infoList">-->
-            <!--<tr>-->
-            <!--<td colspan="8">暂无数据</td>-->
-            <!--</tr>-->
-            <!--</empty>-->
         </table>
-        {if $total==0}{
-            <div style="text-align: center;margin-bottom: 10px;">{$pager}</div>
-        }
+        {if $total==0}
+        <div style="text-align: center;margin-bottom: 10px;">暂无数据</div>
+        {/if}
         <div style="text-align: center;">{$pager}</div>
     </div>
 </div>
@@ -107,24 +98,24 @@
                     <div class="form-group">
                         <label for="category_name" class="col-sm-2 control-label">所属分类</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="sel1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
+                            <select class="form-control" name="type">
+                                <option value="事业">事业</option>
+                                <option value="爱情">爱情</option>
+                                <option value="励志">励志</option>
+                                <option value="生活">生活</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="sys_name" class="col-sm-2 control-label">系统名称</label>
+                        <label for="sys_name" class="col-sm-2 control-label">内容</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" rows="5" id="comment" placeholder="请输入系统名称"></textarea>
+                            <textarea class="form-control" rows="5" name="content" placeholder="内容"></textarea>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="addMoodMessage()" style="height: 34px;">
+                <button type="button" class="btn btn-success" id="submitBtn" style="height: 34px;">
                     添加
                 </button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" style="height: 34px;">
@@ -134,4 +125,51 @@
         </div>
     </div>
     <!-- 模态框 -->
-    {template 'common/footer'}
+{template 'common/footer'}
+<script type="text/javascript">
+    function editMoodmessage(id){
+        $.post('{php echo $this->createWebUrl("getmoodmessage")}', {'moodmessage_id': id}, function (result) {
+                    if (result.status == 'ok') {
+                        $('input[name="id"]').val(result.data['id']);
+                        $('option[value="' + result.data['type'] + '"]').prop("selected", true);
+                        $('textarea[name="content"]').val(result.data['content']);
+                        $('#myModal').modal('show');
+                    } else {
+                        alert(result.data);
+                    }
+        }, 'json');
+    }
+    $(function () {
+            $("#submitBtn").click(function () {
+                $.post('{php echo $this->createWebUrl("savemoodmessage")}', {'data': $('#form_data').serialize()}, function (result) {
+                    if (result.status == 'ok') {
+                        $('#myModal').modal('hide');
+                        clearForm(form_data);
+                        location.reload();
+                    } else if (result.status == 'waring') {
+                        alert(result.data);
+                    } else {
+                        alert(result.data);
+                    }
+                }, 'json');
+            });
+
+            $('#delArrayInfo-btn').click(function () {
+                var isChecked = '';
+                if ($("input[name='rowChecked']:checked").length <= 0) {
+                    layer.msg('请选择批量删除的数据！', {time: 2000});
+                    return;
+                } else {
+                    $('input[name="rowChecked"]:checked').each(function () {
+                        isChecked += $(this).val() + ',';
+                    });
+                    $.post('{php echo $this->createWebUrl("delmoodmessage")}', {'ids': isChecked}, function (result) {
+                        location.reload();
+                        $('input[name="rowChecked"]:checked').each(function () {
+                            $(this).removeAttr('checked');
+                        });
+                    });
+                }
+            });
+        });
+    </script>
